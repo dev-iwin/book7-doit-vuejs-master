@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vue Component Scope</title>
+</head>
+<body>
+    <div id='app'>
+        <my-component1></my-component1>
+        <my-component2></my-component2> <!--컴포1을 직접 참조한 컴포2의 데이터는 표시되지 않음-->
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.2/dist/vue.js"></script>
+    <script>
+        var cmp1 = {
+            template: '<div>첫번째 지역 컴포 : {{cmp1Data}}</div>',
+            data: function() {
+                return {
+                    cmp1Data: 100
+                }
+            }
+        };
+
+        var cmp2 = {
+            template: '<div>두번째 지역 컴포 : {{cmp2Data}}</div>',
+            data: function() {
+                return {
+                    cmp2Data : cmp1.data.cmp1Data
+                    // 이제 직접 참조하는 코드인데, 컴포는 유효범위 때메 직접 참조가 안돼
+                }
+            }
+        }
+
+        new Vue({
+            el: '#app',
+            components: {
+                'my-component1' : cmp1,
+                'my-component2' : cmp2
+            }
+        });
+    </script>
+</body>
+</html>
