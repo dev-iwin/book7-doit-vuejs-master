@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue Nested Router</title>
+</head>
+<body>
+    <div id="app">
+        <h1>뷰 네스티드 라우터 예제</h1>
+        
+            <!-- 뷰 네스티드 라우터 예제에는 라우터 링크 태그가 쓰이지 않네? -->
+            <!-- 최상위 컴포(의 하위)에 포함된, 첫번째 라우터 뷰 태그-->
+            <router-view></router-view>
+        
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.2/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router@3.0.1/dist/vue-router.js"></script>
+    <script>
+        // 컴포넌트의 내용 정의
+        var User = {
+            // `백틱이 여러줄의 문자열 입력에 사용되는구나! 따옴표는 개행으로 입력 불가하고!
+            template: `
+                <div>
+                    User Component
+                    <router-view></router-view>
+                </div>
+            `
+        };
+        var UserProfile = { template: '<div>Profile Cmp</div>' };
+        var UserPost = { template: '<div>Post Cmp</div>' };
+
+        // 네스티드 라우팅 정의
+        var routes = [
+            {
+                path: '/user',
+                component: User,
+                children: [
+                    {
+                        path: 'profile', // 여기에 슬래시 넣으면 인식 못함
+                        component: UserProfile
+                    },
+                    {
+                        path: 'posts',  // children 속성에 정의하는 거라 그런지 슬래시 필요 없음
+                        component: UserPost
+                    },
+
+                ]
+            }
+        ];
+
+        // 뷰 라우터 정의
+        var router = new VueRouter({
+            routes
+        });
+
+        // 뷰 인스턴스에 라우터 추가
+        var app = new Vue({
+            router
+        }).$mount('#app');
+    </script>
+</body>
+</html>
