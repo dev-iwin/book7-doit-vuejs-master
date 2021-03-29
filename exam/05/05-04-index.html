@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue Template - Directives</title>
+</head>
+<body>
+    <!-- 이 예제의 디렉티브들은 대체로 :를 안 쓰고 바로 ="값"이네?
+         v-bind는 기본 태그들에 적용하는 거라서 그런가봐            -->
+    <div id="app">
+        <!-- 이 예제로는 false일 때 if랑 show 흔적 차이는 개발자 도구로 -->
+        <a v-if="flag">진위에 따라 v-if</a>
+        <ul>
+            <li v-for="system in systems">{{ system }}</li>
+        </ul>
+        <p v-show="flag">진위에 따라 v-show</p>
+        <h5 v-bind:id="uid">v-id</h5>
+        <button v-on:click="popupAlert">이벤트 처리</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.2/dist/vue.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                flag: false,
+                systems: ['android', 'ios', 'window'],
+                uid: 10
+            },
+            methods: {
+                popupAlert: function() {
+                    return alert('얍');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
