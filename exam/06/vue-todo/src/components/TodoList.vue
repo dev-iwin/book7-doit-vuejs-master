@@ -1,38 +1,31 @@
 <template>
     <section>
-        <ul>
-            <li v-for="(todoItem, index) in todoItems" class="shadow">
+        <transition-group name="list" tag="ul">
+            <li v-for="(todoItem, index) in propsdata" :key="todoItem" class="shadow">
                 <i class="checkBtn fas fa-check" aria-hidden="true"></i>
                 {{ todoItem }}
                 <span class="removeBtn" type="button" @click="removeTodo(todoItem, index)">
                     <i class="far fa-trash-alt" aria-hidden="true"></i>
                 </span>
             </li>
-        </ul>    
+        </transition-group>    
     </section>
 </template>
 
 <script>
 export default {
-    data() {
-        return {
-            todoItems: []
-        }
-    },
-    created() {
-        if (localStorage.length > 0) {
-            for (var i = 0; i < localStorage.length; i++) {
-            this.todoItems.push(localStorage.key(i));
-            // 자동 갱신은 안 되는 상태
-            }
-        }
-    },
+    props: ['propsdata'],
+    // 상위 컴포에서 데이터를 받는 건데, 하위에 정의하지? 연결이라 그런가?
+    /* App.vue 파일에 todoItems 데이터 속성을 선언했고, 그것을
+       TodoList.vue 컴포넌트의 propsdata 속성에 props로 전달했다.
+       즉, props 속성에 정의하는 값은,
+       상위 컴포에서 내려줄 데이터를 어디에 받을지 결정하는 거겠구나. */
+
     methods: {
         removeTodo(todoItem, index) {
             // console.log('clicked');
             // console.log(todoItem, index);
-            localStorage.removeItem(todoItem);
-            this.todoItems.splice(index, 1);
+            this.$emit('removeTodo', todoItem, index);
         }
     }
 
@@ -40,6 +33,13 @@ export default {
 </script>
 
 <style scoped>
+    .list-enter-active, .list-leave-active {
+        transition: all 1s;
+    }
+    .list-enter, .list-leave-to {
+        opacity: 0;
+        transform: translateY(30px);
+    }
     ul {
         list-style-type: none;
         padding-left: 0px;
